@@ -1,0 +1,33 @@
+version: '3.3'
+services:
+  server:
+    image: tomcat:9-jre8
+    links:
+      - db
+    ports:
+      - "80:80"
+    logging:
+      driver: json-file
+  db:
+    image: postgres:9.5
+    ports:
+      - "8888:5432"
+    logging:
+      driver: json-file
+    environment:
+      POSTGRES_PASSWORD: packt
+      POSTGRES_USER: packt
+      POSTGRES_DB: sample
+  pgadmin4:
+    image: dpage/pgadmin4
+    logging:
+      driver: none
+    ports:
+      - "127.0.0.1:8089:80"
+    volumes:
+      - $HOME/pgadmin:/var/lib/pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: "packt"
+      PGADMIN_DEFAULT_PASSWORD: "packt"
+    links:
+      - db
